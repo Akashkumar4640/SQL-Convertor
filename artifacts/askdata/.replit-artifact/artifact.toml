@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AskData"
+description = "A practical natural-language data explorer that turns questions into safe read-only SQL over a seeded sample database, with clear results, schema inspection, and CSV export."
+version = "1.0.0"
+id = "artifacts/askdata"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21057
+
+[services.development]
+run = "pnpm --filter @workspace/askdata run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/askdata", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/askdata/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21057"
+BASE_PATH = "/"
